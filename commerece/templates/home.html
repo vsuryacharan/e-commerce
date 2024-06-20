@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product List</title>
+    <style>
+        .product-list {
+            display: flex;
+            flex-wrap: wrap; /* Allows wrapping to the next line if items overflow */
+            list-style-type: none; /* Remove bullet points */
+            padding: 0; /* Remove default padding */
+        }
+        .product-list li {
+            flex: 1 1 200px; /* Grow to fill the space, shrink if needed, with a minimum width of 200px */
+            margin: 10px; /* Add some space between items */
+            border: 1px solid #ccc; /* Add a border to each item */
+            padding: 10px; /* Add some padding inside each item */
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+            text-align: center; /* Center align text */
+            transition: transform 0.3s ease; /* Smooth transition for the transform effect */
+        }
+        .product-list li:hover {
+            transform: scale(1.05); /* Scale up the item on hover */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a shadow effect on hover */
+            z-index: 1; /* Ensure the hovered item is above others */
+        }
+        .product-list img {
+            max-width: 100%; /* Ensure images fit within their container */
+            height: 200px; /* Fixed height for images */
+            object-fit: contain; /* Maintain aspect ratio; fits the entire image within the specified dimensions */
+            transition: transform 0.3s ease; /* Smooth transition for the transform effect */
+        }
+        .product-list li:hover img {
+            transform: scale(1.1); /* Scale up the image on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Product List</h1>
+    <ul class="product-list">
+        {% for product in products %}
+            <li>
+                <h2>{{ product.name }}</h2>
+                <p>{{ product.description }}</p>
+                <p>Price: ${{ product.price }}</p>
+                <p>Category: {{ product.category.name }}</p>
+                <p>Uploaded at: {{ product.created_at }}</p>
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width:200px;height:auto;">
+                {% endif %}
+                <a href="{% url 'add_to_cart' product.id %}">Add to Cart</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'view_cart' %}">View Cart</a>
+</body>
+</html>
